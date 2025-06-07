@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import math
 import time
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -25,10 +26,11 @@ def reverse(seq, start, stop):
         seq[i], seq[j] = seq[j], seq[i]
     return ''.join(seq)
 
-def ibn_omar_hash(i):
+def ibn_omar_hash(i_text):
     ti = time.time()
+    iLen = len(bytearray(i_text, 'utf-8'))
 
-    i = map(bin, bytearray(i, 'utf-8'))
+    i = map(bin, bytearray(i_text, 'utf-8'))
     i = ''.join(i)
     i = i.replace('0b', '')
 
@@ -77,8 +79,6 @@ def ibn_omar_hash(i):
     bLDec = sum([int(d) * (2 ** idx) for idx, d in enumerate(reversed(bL))])
     bRDec = sum([int(d) * (2 ** idx) for idx, d in enumerate(reversed(bR))])
 
-    iDecimal = sum([int(d) * (2 ** idx) for idx, d in enumerate(reversed(blocks))])
-
     factorL = sum([int(d) for d in str(bLDec)])
     factorR = sum([int(d) for d in str(bRDec)])
 
@@ -97,7 +97,8 @@ def ibn_omar_hash(i):
     bLDec = abs(int(bLDec))
     bRDec = abs(int(bRDec))
 
-    iLen = len(i)
+    if iLen <= 1:
+        iLen = 2  # Prevent log base <= 1
 
     Yl = abs(math.log(bLDec, iLen))
     Yr = abs(math.log(bRDec, iLen))
@@ -139,5 +140,4 @@ def hash_input():
         return jsonify({'hash': 'HASH_ERROR', 'error': str(e)}), 500
 
 if __name__ == '__main__':
-    import os
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
