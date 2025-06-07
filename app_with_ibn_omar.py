@@ -112,6 +112,8 @@ def ibn_omar_hash(i_text):
         bRDec = (eR * bRDec) + eR
 
     Y = int(math.floor(Yl * Yr))
+    if Y == 0:
+        Y = 1
     bDec = (bRDec + bLDec) / Y
     bDec = lShift(str(int(bDec)), Y)
 
@@ -137,6 +139,7 @@ def hash_input():
         hashed = ibn_omar_hash(clean_text)
         return jsonify({'hash': hashed})
     except Exception as e:
+        print('Hashing Error:', e)
         return jsonify({'hash': 'HASH_ERROR', 'error': str(e)}), 500
 
 if __name__ == '__main__':
