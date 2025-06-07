@@ -1,9 +1,11 @@
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import math
 import time
 
 app = Flask(__name__)
+CORS(app)
 
 def rShift(s1, d):
     rs = s1[0:len(s1) - d]
