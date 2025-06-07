@@ -32,7 +32,7 @@ def ibn_omar_hash(i):
     ti = time.time()
     isize = len(i)
 
-    i = map(bin, bytearray(i))
+    i = map(bin, bytearray(i, 'utf-8'))
     i = ''.join(i).replace('0b', '')
 
     A = '1100010001111001001110110001010001100101001011000101100110010011101100010111111001010010'
